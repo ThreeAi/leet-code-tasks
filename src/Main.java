@@ -10,9 +10,10 @@ import java.util.stream.IntStream;
 public class Main {
     public static void main(String[] args) {
 
-        int[] height = new int[]{4,2,3};
-
-        System.out.println(Solution.myAtoi("   -042"));
+        char[][] height = new char[][]{{'5','3','.','.','7','.','.','.','.'},{'6','.','.','1','9','5','.','.','.'},{'.','9','8','.','.','.','.','6','.'},{'8','.','.','.','6','.','.','.','3'},{'4','.','.','8','.','3','.','.','1'},{'7','.','.','.','2','.','.','.','6'},{'.','6','.','.','.','.','2','8','.'},{'.','.','.','4','1','9','.','.','5'},{'.','.','.','.','8','.','.','7','9'}};
+        int[][] matrix = new int[][]{{1,2,3,4}, {5,6,7,8}, {9,10,11,12}, {5,6,7,8}, {9,10,11,12}};
+        Solution.spiralOrder(matrix);
+        System.out.println(Solution.isValidSudoku(height));
     }
 
 
@@ -31,6 +32,7 @@ class Solution {
             }
         }
     }
+
     public static int removeElement(int[] nums, int val) {
         int left = 0;
         int right = nums.length - 1;
@@ -41,7 +43,7 @@ class Solution {
                 }
                 nums[left] = nums[right];
                 right--;
-                if(left > right) break;
+                if (left > right) break;
             }
             left++;
         }
@@ -51,12 +53,11 @@ class Solution {
     public static int removeDuplicates(int[] nums) {
         int index = 0;
         boolean count = true;
-        for(int i = 1; i< nums.length; i++) {
+        for (int i = 1; i < nums.length; i++) {
             if (nums[index] != nums[i]) {
                 nums[++index] = nums[i];
                 count = true;
-            }
-            else if (count) {
+            } else if (count) {
                 nums[++index] = nums[i];
                 count = false;
             }
@@ -68,7 +69,7 @@ class Solution {
         int max = 0;
         int res = nums[0];
         Map<Integer, Integer> map = new HashMap<>();
-        for(int num : nums) {
+        for (int num : nums) {
             if (map.containsKey(num)) {
                 int value = map.get(num);
                 map.put(num, ++value);
@@ -76,8 +77,7 @@ class Solution {
                     max = value;
                     res = num;
                 }
-            }
-            else {
+            } else {
                 map.put(num, 1);
             }
         }
@@ -87,7 +87,7 @@ class Solution {
     public static void rotate(int[] nums, int k) {
         if (k == 0) return;
         int[] temp = new int[k];
-        for(int i = 0; i < nums.length + k; i++) {
+        for (int i = 0; i < nums.length + k; i++) {
             int a = nums[i % nums.length];
             nums[i % nums.length] = temp[i % k];
             temp[i % k] = a;
@@ -129,8 +129,7 @@ class Solution {
         }
         if (prices.get(index) < buyPrice) {
             recurciveProfit(index + 1, prices.get(index), prices, sum, results);
-        }
-        else {
+        } else {
             recurciveProfit(index + 1, buyPrice, prices, sum, results);
             recurciveProfit(index + 1, Integer.MAX_VALUE, prices, sum + (prices.get(index) - buyPrice), results);
         }
@@ -138,8 +137,8 @@ class Solution {
 
     public static boolean canJump(int[] nums) {
         int reachable = 0;
-        for(int i = 0; i < nums.length; i ++) {
-            if(i > reachable) return false;
+        for (int i = 0; i < nums.length; i++) {
+            if (i > reachable) return false;
             if (reachable < i + nums[i]) {
                 reachable = i + nums[i];
             }
@@ -159,7 +158,7 @@ class Solution {
             return;
         }
         if (currentIndex >= nums.length || nums[currentIndex] == 0) return;
-        for(int i = 1; i <= nums[currentIndex]; i++) {
+        for (int i = 1; i <= nums[currentIndex]; i++) {
             recursiveJumps(nums, currentIndex + i, jump + 1, jumps);
         }
     }
@@ -168,14 +167,13 @@ class Solution {
         boolean zeroExist = false;
         int indexZero = 0;
         int product = 1;
-        for(int i = 0; i < nums.length; i ++) {
+        for (int i = 0; i < nums.length; i++) {
             if (nums[i] != 0) {
                 product *= nums[i];
-            } else if(!zeroExist) {
+            } else if (!zeroExist) {
                 zeroExist = true;
                 indexZero = i;
-            }
-            else {
+            } else {
                 return new int[nums.length];
             }
         }
@@ -185,24 +183,24 @@ class Solution {
             return res;
         }
         int[] res = new int[nums.length];
-        for(int i = 0; i < nums.length; i++) {
+        for (int i = 0; i < nums.length; i++) {
             res[i] = product / nums[i];
         }
         return res;
     }
 
     public static int canCompleteCircuit(int[] gas, int[] cost) {
-            // 4 1 5 2 1 3 2 4 3 5
-            // 1 3 2 4 3 5 4 1 5 2
+        // 4 1 5 2 1 3 2 4 3 5
+        // 1 3 2 4 3 5 4 1 5 2
         int n = gas.length;
         int total_surplus = 0;
         int surplus = 0;
         int start = 0;
 
-        for(int i = 0; i < n; i++){
+        for (int i = 0; i < n; i++) {
             total_surplus += gas[i] - cost[i];
             surplus += gas[i] - cost[i];
-            if(surplus < 0){
+            if (surplus < 0) {
                 surplus = 0;
                 start = i + 1;
             }
@@ -245,23 +243,23 @@ class Solution {
         int res = 0;
         int indexMaxTop = 0;
         int maxTop = 0;
-        for(int i = 0; i < height.length; i++) {
-            if(maxTop <= height[i]) {
+        for (int i = 0; i < height.length; i++) {
+            if (maxTop <= height[i]) {
                 maxTop = height[i];
                 indexMaxTop = i;
             }
         }
         int localTop = 0;
-        for(int i = 0; i < indexMaxTop; i++) {
-            if(localTop < height[i]) {
+        for (int i = 0; i < indexMaxTop; i++) {
+            if (localTop < height[i]) {
                 localTop = height[i];
                 continue;
             }
             res += localTop - height[i];
         }
         localTop = 0;
-        for(int i = height.length - 1; i > indexMaxTop; i--){
-            if(localTop < height[i]) {
+        for (int i = height.length - 1; i > indexMaxTop; i--) {
+            if (localTop < height[i]) {
                 localTop = height[i];
                 continue;
             }
@@ -273,15 +271,14 @@ class Solution {
 
     public static int romanToInt(String s) {
         int[] digits = new int[s.length()];
-        for(int i = 0; i < s.length(); i++){
+        for (int i = 0; i < s.length(); i++) {
             digits[i] = convertToInt(s.charAt(i));
         }
         int res = digits[digits.length - 1];
-        for(int i = digits.length - 2; i >= 0; i--) {
-            if(digits[i] < digits[i+1]) {
+        for (int i = digits.length - 2; i >= 0; i--) {
+            if (digits[i] < digits[i + 1]) {
                 res -= digits[i];
-            }
-            else {
+            } else {
                 res += digits[i];
             }
         }
@@ -304,9 +301,9 @@ class Solution {
     public static String intToRoman(int num) {
         StringBuilder res = new StringBuilder();
         int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
-        String[] symbols = {"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};
-        for(int i = 0; i < values.length; i++){
-            while(num - values[i] >= 0) {
+        String[] symbols = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+        for (int i = 0; i < values.length; i++) {
+            while (num - values[i] >= 0) {
                 num -= values[i];
                 res.append(symbols[i]);
             }
@@ -317,17 +314,15 @@ class Solution {
     public static int lengthOfLastWord(String s) {
         boolean space = false;
         int max = 0;
-        for(int i = s.length() - 1; i >=0; i--) {
+        for (int i = s.length() - 1; i >= 0; i--) {
             char c = s.charAt(i);
-            if(c != ' ') {
+            if (c != ' ') {
                 max++;
                 space = true;
-            }
-            else {
-                if(space) {
+            } else {
+                if (space) {
                     return max;
-                }
-                else {
+                } else {
                     continue;
                 }
             }
@@ -337,12 +332,12 @@ class Solution {
 
     public static String longestCommonPrefix(String[] strs) {
         String prefix = strs[0];
-        for(int i = 1; i < strs.length; i++) {
+        for (int i = 1; i < strs.length; i++) {
             int j = 0;
-            while(prefix.length() > j && strs[i].length() > j && prefix.charAt(j) == strs[i].charAt(j)){
-                j ++;
+            while (prefix.length() > j && strs[i].length() > j && prefix.charAt(j) == strs[i].charAt(j)) {
+                j++;
             }
-            if(j == 0) return "";
+            if (j == 0) return "";
             prefix = prefix.substring(0, j);
         }
         return prefix;
@@ -352,8 +347,8 @@ class Solution {
         s = s.trim();
         String[] arr = s.split("\\s+");
         StringBuilder res = new StringBuilder();
-        for(int i = arr.length - 1; i >0; i--) {
-            if(!arr[i].contains(" ")) {
+        for (int i = arr.length - 1; i > 0; i--) {
+            if (!arr[i].contains(" ")) {
                 res.append(arr[i]).append(" ");
             }
         }
@@ -362,18 +357,17 @@ class Solution {
     }
 
     public static String convert(String s, int numRows) {
-        if(numRows == 1) {
+        if (numRows == 1) {
             return s;
         }
         StringBuilder res = new StringBuilder();
-        for(int i = 0; i < numRows; i++) {
+        for (int i = 0; i < numRows; i++) {
             int index = i;
-            while(index < s.length()) {
-                if(i == 0 || i == numRows - 1) {
+            while (index < s.length()) {
+                if (i == 0 || i == numRows - 1) {
                     res.append(s.charAt(index));
                     index = index + (numRows * 2 - 2);
-                }
-                else {
+                } else {
                     res.append(s.charAt(index));
                     index = index + (numRows * 2 - 2) - i * 2;
                     if (index < s.length()) {
@@ -390,55 +384,219 @@ class Solution {
         String str = String.valueOf(x);
         StringBuilder res = new StringBuilder();
         int end = 0;
-        if(str.charAt(0) == '-') {
+        if (str.charAt(0) == '-') {
             res.append('-');
             end = 1;
         }
-        for(int i = str.length() - 1; i >= end; i -- ){
+        for (int i = str.length() - 1; i >= end; i--) {
             res.append(str.charAt(i));
         }
         try {
             return Integer.parseInt(res.toString());
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             return 0;
         }
     }
 
     public static int myAtoi(String s) {
         s = s.trim();
-        if(s.isEmpty()) return 0;
+        if (s.isEmpty()) return 0;
         StringBuilder res = new StringBuilder();
         int start = 0;
-        if(s.charAt(0) == '-' || s.charAt(0) == '+') {
+        if (s.charAt(0) == '-' || s.charAt(0) == '+') {
             res.append(s.charAt(0));
             start = 1;
         }
         boolean flag = true;
-        for(int i = start; i < s.length() && flag; i++ ) {
-            if(Character.isDigit(s.charAt(i))) {
+        for (int i = start; i < s.length() && flag; i++) {
+            if (Character.isDigit(s.charAt(i))) {
                 res.append(s.charAt(i));
-            }
-            else {
+            } else {
                 flag = false;
             }
         }
         try {
             BigInteger result = new BigInteger(res.toString());
-            if(result.compareTo(new BigInteger(String.valueOf(Integer.MIN_VALUE))) < 0) return Integer.MIN_VALUE;
-            if(result.compareTo(new BigInteger(String.valueOf(Integer.MAX_VALUE))) > 0) return Integer.MAX_VALUE;
+            if (result.compareTo(new BigInteger(String.valueOf(Integer.MIN_VALUE))) < 0) return Integer.MIN_VALUE;
+            if (result.compareTo(new BigInteger(String.valueOf(Integer.MAX_VALUE))) > 0) return Integer.MAX_VALUE;
             return Integer.valueOf(result.toString());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return 0;
         }
+    }
+
+    public static boolean isPalindrome(int x) {
+        if (x < 0) return false;
+        String num = String.valueOf(x);
+        for (int i = 0; i < num.length() / 2; i++) {
+            if (num.charAt(i) != num.charAt(num.length() - 1 - i)) return false;
+        }
+        return true;
+    }
+
+    public static int strStr(String haystack, String needle) {
+        return haystack.indexOf(needle);
+    }
+
+    public static boolean isPalindrome(String s) {
+        int left = 0;
+        int right = s.length() - 1;
+        while (left < right) {
+            while (!Character.isLetterOrDigit(s.charAt(left)) && left < right) left++;
+            while (!Character.isLetterOrDigit(s.charAt(right)) && left < right) right--;
+            if (Character.toLowerCase(s.charAt(left++)) != Character.toLowerCase(s.charAt(right--))) return false;
+        }
+        return true;
+    }
+
+    public static boolean isSubsequence(String s, String t) {
+        if (t.length() < s.length()) return false;
+        int index1 = 0;
+        int index2 = 0;
+        while (index1 < s.length() && index2 < t.length()) {
+            while (index2 < t.length() && t.charAt(index2++) != s.charAt(index1)) ;
+            if (index2 <= t.length() && t.charAt(index2 - 1) == s.charAt(index1)) index1++;
+            if (index2 >= t.length() && index1 < s.length()) return false;
+        }
+        return true;
+    }
+
+    public static int[] twoSum(int[] numbers, int target) {
+        int index1 = 0;
+        int index2 = numbers.length - 1;
+        while (index1 < index2) {
+            if (numbers[index1] + numbers[index2] == target)
+                return new int[]{index1 + 1, index2 + 2};
+            else if (numbers[index1] + numbers[index2] > target)
+                index2--;
+            else
+                index1++;
+        }
+        return new int[]{1, 2};
+    }
+
+    public static int maxArea(int[] height) {
+        int left = 0;
+        int right = height.length - 1;
+        int max = Math.min(height[left], height[right]) * (right - left);
+        while (left < right) {
+            max = Math.max(Math.min(height[left], height[right]) * (right - left), max);
+            if (height[left] < height[right]) {
+                while (++left < height.length && height[left - 1] > height[left]) ;
+            } else {
+                while (--right > 0 && height[right + 1] > height[left]) ;
+            }
+        }
+        return max;
+    }
+
+    public static List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(nums);
+        recursiveFill(0, nums, new ArrayList<>(), res);
+        return res.stream().distinct().collect(Collectors.toList());
+    }
+
+    public static void recursiveFill(int index, int[] nums, List<Integer> sum, List<List<Integer>> res) {
+        if (sum.size() >= 3) {
+            if (sum.stream().mapToInt(Integer::intValue).sum() == 0) res.add(new ArrayList<>(sum));
+            return;
+        }
+        for (int i = index; i < nums.length; i++) {
+            var temp = new ArrayList<>(sum);
+            temp.add(nums[i]);
+            recursiveFill(i + 1, nums, temp, res);
+        }
+    }
+
+    public static int minSubArrayLen(int target, int[] nums) {
+        int left = 0, currentSum = 0, minlength = Integer.MAX_VALUE;
+        for (int right = 0; right < nums.length; right++) {
+            currentSum += nums[right];
+            while (currentSum >= target) {
+                minlength = Math.min(minlength, right - left + 1);
+                currentSum -= nums[left];
+                left++;
+            }
+        }
+        return minlength == Integer.MAX_VALUE ? 0 : minlength;
+    }
+
+    public static int lengthOfLongestSubstring(String s) {
+        int maxLen = 0;
+        StringBuilder string = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            int index = string.indexOf(s.substring(i, i + 1));
+            if (index == -1) {
+                string.append(s.charAt(i));
+                maxLen = Math.max(string.length(), maxLen);
+            } else {
+                string.delete(0, index);
+                string.append(s.charAt(i));
+                maxLen = Math.max(string.length(), maxLen);
+            }
+        }
+        return maxLen;
+    }
+
+    public static boolean isValidSudoku(char[][] board) {
+        Set<Character> characters = new HashSet<>(9);
+        for(int i = 49; i < 58; i++) {
+            characters.add((char) i);
+        }
+        for(int i = 0; i < board.length; i++) {
+            Set<Character> row = new HashSet<>(characters);
+            Set<Character> column = new HashSet<>(characters);
+            for(int k = 0; k < board[i].length; k++) {
+                if(board[i][k] != '.' && !row.remove(board[i][k])) {
+                    return false;
+                }
+                if(board[k][i] != '.' && !column.remove(board[k][i])) {
+                    return false;
+                }
+            }
+        }
+
+        for(int i = 0; i < 3; i++) {
+            for(int k = 0; k < 3; k++) {
+                Set<Character> square = new HashSet<>(characters);
+                for(int r = 0; r < 3; r++) {
+                    for(int c = 0; c < 3; c++) {
+                        if(board[i * 3 + r][k * 3 + c] == '.' ) continue;
+                        if(!square.remove(board[i * 3 + r][k * 3 + c])) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public static List<Integer> spiralOrder(int[][] matrix) {
+        int width = matrix.length;
+        int length = matrix[0].length;
+        int count;
+        if(length < width) {
+            count = (length + 1) * length / (1 + length) * 2;
+        }
+        else {
+            count = (width - 1) * width / width * 2 + 1;
+        }
+        System.out.println(count);
+        int x = 0;
+        int y = 0;
+        for(int i = count; i > 0; i--) {
+
+        }
+        return null;
     }
 }
 
 class RandomizedSet {
 
     private Set<Integer> set;
+
     public RandomizedSet() {
         set = new HashSet<>();
     }
@@ -453,6 +611,6 @@ class RandomizedSet {
 
     public int getRandom() {
         Random random = new Random();
-        return (int)set.toArray()[random.nextInt(set.size())];
+        return (int) set.toArray()[random.nextInt(set.size())];
     }
 }
