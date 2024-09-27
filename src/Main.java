@@ -11,9 +11,9 @@ public class Main {
     public static void main(String[] args) {
 
         char[][] height = new char[][]{{'5','3','.','.','7','.','.','.','.'},{'6','.','.','1','9','5','.','.','.'},{'.','9','8','.','.','.','.','6','.'},{'8','.','.','.','6','.','.','.','3'},{'4','.','.','8','.','3','.','.','1'},{'7','.','.','.','2','.','.','.','6'},{'.','6','.','.','.','.','2','8','.'},{'.','.','.','4','1','9','.','.','5'},{'.','.','.','.','8','.','.','7','9'}};
-        int[][] matrix = new int[][]{{1,2,3,4}, {5,6,7,8}, {9,10,11,12}, {5,6,7,8}, {9,10,11,12}};
-        Solution.spiralOrder(matrix);
-        System.out.println(Solution.isValidSudoku(height));
+        int[][] matrix = new int[][]{{0,1,0},{0,0,1},{1,1,1},{0,0,0}};
+        Solution.gameOfLife(matrix);
+        System.out.println(Arrays.deepToString(matrix));
     }
 
 
@@ -576,6 +576,7 @@ class Solution {
     public static List<Integer> spiralOrder(int[][] matrix) {
         int width = matrix.length;
         int length = matrix[0].length;
+        List<Integer> res = new ArrayList<>(width * length);
         int count;
         if(length < width) {
             count = (length + 1) * length / (1 + length) * 2;
@@ -586,10 +587,160 @@ class Solution {
         System.out.println(count);
         int x = 0;
         int y = 0;
-        for(int i = count; i > 0; i--) {
-
+        for(int i = count, board = 1; i > 0; i--, board++) {
+            switch (board % 4) {
+                case 1:{
+                    while(x < length - board / 4) {
+                        res.add(matrix[y][x]);
+                        x++;
+                    }
+                    x--;
+                    y++;
+                    break;
+                }
+                case 2:{
+                    while(y < width - board / 4) {
+                        res.add(matrix[y][x]);
+                        y++;
+                    }
+                    y--;
+                    x--;
+                    break;
+                }
+                case 3:{
+                    while(x >= board / 4) {
+                        res.add(matrix[y][x]);
+                        x--;
+                    }
+                    x++;
+                    y--;
+                    break;
+                }
+                case 0:{
+                    while(y >= board / 4) {
+                        res.add(matrix[y][x]);
+                        y--;
+                    }
+                    y++;
+                    x++;
+                    break;
+                }
+            }
         }
-        return null;
+        return res;
+    }
+
+    public static void rotate(int[][] matrix) {
+        int length = matrix.length;
+        int y = 0;
+        while(y < length / 2) {
+            int x = y;
+            while(x <= length - 2 - y) {
+                int temp = matrix[x][y];
+                matrix[x][y] = matrix[length - 1 - y][x];
+                matrix[length - 1 - y][x] = matrix[length - 1 - x][length - 1 - y];
+                matrix[length - 1 - x][length - 1 - y] = matrix[y][length - 1 - x];
+                matrix[y][length - 1 - x] = temp;
+                x++;
+            }
+            y++;
+        }
+    }
+
+    public static void setZeroes(int[][] matrix) {
+        Set<Integer> set = new HashSet<>();
+        for(int i = 0; i < matrix.length; i++) {
+            for(int k = 0; k < matrix[0].length; k++) {
+                if(matrix[i][k] == 0) {
+                    for(int j = 0; j < matrix.length; j++) {
+                        set.add(j * 1000 + k);
+                    }
+                    for(int j = 0; j < matrix[0].length; j++) {
+                        set.add(i * 1000 + j);
+                    }
+                }
+            }
+        }
+        set.stream().forEach(i -> matrix[i / 1000][i % 1000] = 0);
+    }
+
+    public static void gameOfLife(int[][] board) {
+        for(int y = 0; y <= board.length - 1; y++) {
+            for(int x = 0; x <= board[0].length - 1; x++) {
+                int sy = y == 0 ? 0 : y - 1;
+                int ey = y == board.length - 1 ? board.length - 1 : y + 1;
+                int sx = x == 0 ? 0 : x - 1;
+                int ex = x == board[0].length - 1 ? board[0].length - 1 : x + 1;
+                int sum = 0;
+                for(int yy = sy; yy <= ey; yy++) {
+                    for(int xx = sx; xx <= ex; xx++) {
+                        sum += board[yy][xx] % 2;
+                    }
+                }
+                sum -= board[y][x];
+                if((sum < 2 || sum > 3) && board[y][x] == 1) {
+                    board[y][x] =  1;
+                }
+                if((sum == 2 || sum == 3) && board[y][x] == 1) {
+                    board[y][x] = 3;
+                }
+                if(sum == 3 && board[y][x] == 0) {
+                    board[y][x] = 2;
+                }
+            }
+        }
+        for(int x = 0; x <= board.length - 1; x++) {
+            for(int y = 0; y <= board[0].length - 1; y++) {
+                board[x][y] >>= 1;
+            }
+        }
+    }
+
+    public boolean canConstruct(String ransomNote, String magazine) {
+        int[] letters = new int[26];
+        for(char c : magazine.toCharArray()) {
+            letters[c - 'a']++;
+        }
+        for(char c : ransomNote.toCharArray()) {
+            letters[c - 'a']--;
+            if(letters[c - 'a'] == -1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isIsomorphic(String s, String t) {
+        Map<Character, Character> map = new HashMap<>();
+        for(int i = 0; i < s.length(); i++) {
+            if(!map.containsKey(s.charAt(i)) && !map.containsValue(t.charAt(i))) {
+                map.put(s.charAt(i), t.charAt(i));
+            }
+            else {
+                Character temp = map.get(s.charAt(i));
+                if(temp == null || temp != t.charAt(i)){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean wordPattern(String pattern, String s) {
+        Map<Character, String> map = new HashMap<>();
+        String[] strings = s.split(" ");
+        for(int i = 0; i < pattern.length(); i++) {
+            if(!map.containsKey(s.charAt(i)) && !map.containsValue(strings[i])) {
+                map.put(s.charAt(i), strings[i]);
+            }
+            else {
+                String temp = map.get(s.charAt(i));
+                if(temp == null || !temp.equals(strings[i])){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
 
