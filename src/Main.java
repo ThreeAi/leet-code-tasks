@@ -15,7 +15,7 @@ public class Main {
 //        Solution.gameOfLife(matrix);
         String[] strs = new String[]{"eat","tea","tan","ate","nat","bat"};
 
-        System.out.println(HashMapTasks.groupAnagrams(strs));
+        System.out.println(HashMapTasks.isHappy(2));
     }
 
 
