@@ -14,8 +14,11 @@ public class Main {
         int[][] matrix = new int[][]{{0,1,0},{0,0,1},{1,1,1},{0,0,0}};
 //        Solution.gameOfLife(matrix);
         String[] strs = new String[]{"eat","tea","tan","ate","nat","bat"};
+        int[][] intervals = { {1,2},{3,5},{6,7},{8,10},{12,16} };
+        int[] inteval = new int[]{11,8};
+        int[] nums = new int[]{0,2,3,4,6,8,9};
 
-        System.out.println(HashMapTasks.isHappy(2));
+        System.out.println(Interval.insert(intervals,inteval ));
     }
 
 
