@@ -18,7 +18,7 @@ public class Main {
         int[] inteval = new int[]{11,8};
         int[] nums = new int[]{0,2,3,4,6,8,9};
 
-        System.out.println(Interval.insert(intervals,inteval ));
+        System.out.println(Stack.isValid("([])"));
     }
 
 

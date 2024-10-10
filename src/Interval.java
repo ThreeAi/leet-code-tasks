@@ -72,4 +72,21 @@ public class Interval {
         }
         return res;
     }
+
+    //452. Minimum Number of Arrows to Burst Balloons
+    public static int findMinArrowShots(int[][] points) {
+        Arrays.sort(points, Comparator.comparingInt(i -> i[0]));
+        int res = 1;
+        int temp = Integer.MAX_VALUE;
+        for(int[] item: points) {
+            if(item[0] <= temp) {
+                temp = Math.min(item[1], temp);
+            }
+            else {
+                res++;
+                temp = item[1];
+            }
+        }
+        return res;
+    }
 }
