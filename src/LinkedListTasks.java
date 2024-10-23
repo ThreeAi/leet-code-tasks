@@ -1,15 +1,25 @@
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 class ListNode {
-      int val;
-      ListNode next;
-      ListNode() {}
-      ListNode(int x) {
-          val = x;
-          next = null;
-      }
-      ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+    int val;
+    ListNode next;
+
+    ListNode() {
+    }
+
+    ListNode(int x) {
+        val = x;
+        next = null;
+    }
+
+    ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
 }
+
 public class LinkedListTasks {
 
     //141. Linked List Cycle
@@ -33,7 +43,7 @@ public class LinkedListTasks {
         ListNode res = new ListNode();
         ListNode temp = res;
         int digit = 0;
-        while(l1 != null || l2 != null || digit != 0) {
+        while (l1 != null || l2 != null || digit != 0) {
             int first = l1 != null ? l1.val : 0;
             int second = l2 != null ? l2.val : 0;
             temp.val = first + second + digit;
@@ -41,7 +51,7 @@ public class LinkedListTasks {
             temp.val = temp.val % 10;
             l1 = l1 != null ? l1.next : null;
             l2 = l2 != null ? l2.next : null;
-            if(l1 != null || l2 != null || digit != 0) {
+            if (l1 != null || l2 != null || digit != 0) {
                 temp.next = new ListNode();
                 temp = temp.next;
             }
@@ -53,28 +63,131 @@ public class LinkedListTasks {
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
         var res = new ListNode();
         var start = res;
-        while(list1 != null || list2 != null) {
+        while (list1 != null || list2 != null) {
             res.next = new ListNode();
             res = res.next;
-            if(list1 == null) {
+            if (list1 == null) {
                 res.val = list2.val;
                 list2 = list2.next;
                 continue;
             }
-            if(list2 == null) {
+            if (list2 == null) {
                 res.val = list1.val;
                 list1 = list1.next;
                 continue;
             }
-            if(list1.val < list2.val) {
+            if (list1.val < list2.val) {
                 res.val = list1.val;
                 list1 = list1.next;
-            }
-            else {
+            } else {
                 res.val = list2.val;
                 list2 = list2.next;
             }
         }
+        return start.next;
+    }
+
+    //92. Reverse Linked List II
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        ListNode temp = head;
+        List<ListNode> list = new ArrayList<>();
+        while (temp != null) {
+            list.add(temp);
+            temp = temp.next;
+        }
+        left--;
+        right--;
+        temp = head;
+        for (int i = right; i > left; i--) {
+            list.get(i).next = list.get(i - 1);
+        }
+        if (left != 0)
+            list.get(left - 1).next = list.get(right);
+        if (right != list.size() - 1)
+            list.get(left).next = list.get(right + 1);
+        else
+            list.get(left).next = null;
+        return left == 0 ? list.get(right) : temp;
+    }
+
+    //25. Reverse Nodes in k-Group
+    public ListNode reverseKGroup(ListNode head, int k) {
+        ListNode temp = head;
+        List<ListNode> list = new ArrayList<>();
+        while (temp != null) {
+            list.add(temp);
+            temp = temp.next;
+        }
+        int left = 0;
+        int right = left + k - 1;
+        while (right <= list.size() - 1) {
+            for (int i = right; i > left; i--) {
+                list.get(i).next = list.get(i - 1);
+            }
+            if (left == 0)
+                temp = list.get(right);
+            if (right != list.size() - 1)
+                if (right + k <= list.size() - 1)
+                    list.get(left).next = list.get(right + k);
+                else
+                    list.get(left).next = list.get(right + 1);
+            else
+                list.get(left).next = null;
+            left = right + 1;
+            right = left + k - 1;
+        }
+        return temp;
+    }
+
+    //19. Remove Nth Node From End of List
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode temp = head;
+        List<ListNode> list = new ArrayList<>();
+        while (temp != null) {
+            list.add(temp);
+            temp = temp.next;
+        }
+        temp = head;
+        if(n == 1) {
+            if (list.size() >= 2)
+                list.get(list.size() - 2).next = null;
+            else
+                temp = null;
+        }
+        else if(n == list.size()) {
+            temp = list.get(1);
+        }
+        else {
+            list.get(list.size() - n - 1).next = list.get(list.size() - n + 1);
+        }
+        return temp;
+    }
+
+    //82. Remove Duplicates from Sorted List II
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null) return null;
+
+        ListNode start = new ListNode(0);
+        ListNode temp = start;
+        start.next = head;
+
+        while (head != null) {
+            boolean isDuplicate = false;
+
+            while (head.next != null && head.val == head.next.val) {
+                isDuplicate = true;
+                head = head.next;
+            }
+            if (isDuplicate) {
+                head = head.next;
+                continue;
+            }
+            temp.next = head;
+            temp = temp.next;
+            head = head.next;
+        }
+        temp.next = null;
+
         return start.next;
     }
 
