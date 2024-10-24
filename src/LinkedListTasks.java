@@ -229,4 +229,46 @@ public class LinkedListTasks {
         return res.next;
     }
 
+    //61. Rotate List
+    public ListNode rotateRight(ListNode head, int k) {
+        if(head == null || k == 0 || head.next == null) return head;
+        ListNode temp = head;
+        List<ListNode> list = new ArrayList<>();
+        while (temp != null) {
+            list.add(temp);
+            temp = temp.next;
+        }
+        temp = head;
+        int rotate = k % list.size();
+        if(rotate == 0) return head;
+        list.get(list.size() - 1).next = temp;
+        temp = list.get(list.size() - rotate);
+        list.get(list.size() - rotate - 1).next = null;
+        return temp;
+    }
+
+    //86. Partition List
+    public ListNode partition(ListNode head, int x) {
+        ListNode before = new ListNode(0);
+        ListNode after = new ListNode(0);
+        ListNode beforeCurr = before;
+        ListNode afterCurr = after;
+
+        while(head != null) {
+            if(head.val < x) {
+                beforeCurr.next = head;
+                beforeCurr = beforeCurr.next;
+            } else {
+                afterCurr.next = head;
+                afterCurr = afterCurr.next;
+            }
+            head = head.next;
+        }
+
+        afterCurr.next = null;
+        beforeCurr.next = after.next;
+
+        return before.next;
+    }
+
 }
