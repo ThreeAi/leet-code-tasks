@@ -1,6 +1,7 @@
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 class ListNode {
     int val;
@@ -20,6 +21,17 @@ class ListNode {
     }
 }
 
+class Node {
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+        this.val = val;
+        this.next = null;
+        this.random = null;
+    }
+}
 public class LinkedListTasks {
 
     //141. Linked List Cycle
@@ -189,6 +201,32 @@ public class LinkedListTasks {
         temp.next = null;
 
         return start.next;
+    }
+    //138. Copy List with Random Pointer
+    public Node copyRandomList(Node head) {
+        if (head == null) return null;
+
+        Map<Node, Node> map = new HashMap<>();
+        Node res = new Node(0);
+        Node temp = res;
+
+        Node current = head;
+        while (current != null) {
+            temp.next = new Node(current.val);
+            map.put(current, temp.next);
+            current = current.next;
+            temp = temp.next;
+        }
+
+        current = head;
+        temp = res.next;
+        while (current != null) {
+            temp.random = (current.random != null) ? map.get(current.random) : null;
+            current = current.next;
+            temp = temp.next;
+        }
+
+        return res.next;
     }
 
 }
