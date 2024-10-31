@@ -40,4 +40,5 @@ public class BinaryTreeGeneralTasks {
         root.right = invertTree(temp);
         return root;
     }
+
 }
