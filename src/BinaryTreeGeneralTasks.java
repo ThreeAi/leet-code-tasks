@@ -79,4 +79,33 @@ public class BinaryTreeGeneralTasks {
 
         return root;
     }
+
+    //112. Path Sum
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        if(root == null && targetSum == 0) return false;
+        return recursivePathSum(root, 0, targetSum);
+    }
+
+    public boolean recursivePathSum(TreeNode root, int sum, int targetSum) {
+        if(root != null) {
+            sum += root.val;
+        }
+        else {
+            return false;
+        }
+        if(root.right == null && root.left == null) {
+            return sum == targetSum;
+        }
+        else {
+            return recursivePathSum(root.left, sum, targetSum) || recursivePathSum(root.right, sum, targetSum);
+        }
+    }
+
+    //222. Count Complete Tree Nodes
+    public int countNodes(TreeNode root) {
+        if(root == null) {
+            return 0;
+        }
+        return 1 + countNodes(root.left) + countNodes(root.right);
+    }
 }
