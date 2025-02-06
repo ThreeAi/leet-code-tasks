@@ -127,4 +127,38 @@ public class ArrayString {
         }
         return false;
     }
+
+    //443. String Compression
+    public int compress(char[] chars) {
+        List<Character> uniqueChars = new ArrayList<>();
+        uniqueChars.add(chars[0]);
+        List<Integer> countChars = new ArrayList<>();
+        countChars.add(1);
+        int index = 0;
+        for(int i = 1; i < chars.length; i++) {
+            if(uniqueChars.get(index) == chars[i]) {
+                countChars.set(index, countChars.get(index) + 1);
+            }
+            else {
+                uniqueChars.add(chars[i]);
+                countChars.add(1);
+                index++;
+            }
+        }
+
+        StringBuilder res = new StringBuilder();
+        for(int i = 0; i < uniqueChars.size(); i ++) {
+            res.append(uniqueChars.get(i));
+            if(countChars.get(i) != 1) {
+                res.append(countChars.get(i));
+            }
+        }
+
+        for(int i = 0; i < res.length(); i ++) {
+            chars[i] = res.charAt(i);
+        }
+        return res.length();
+    }
+
+
 }
