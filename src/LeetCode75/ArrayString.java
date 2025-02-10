@@ -5,7 +5,7 @@ import java.util.*;
 public class ArrayString {
 
     public static void main(String[] args) {
-        System.out.println(increasingTriplet(new int[] {2,1,5,0,4,6}));
+        System.out.println(increasingTriplet(new int[]{2, 1, 5, 0, 4, 6}));
     }
 
     //1768. Merge Strings Alternately
@@ -15,10 +15,10 @@ public class ArrayString {
 
         res.setLength(word1.length() + word2.length());
 
-        for(int i = 0; i < word1.length(); i ++) {
+        for (int i = 0; i < word1.length(); i++) {
             res.setCharAt(min > i * 2 ? i * 2 : min / 2 + i, word1.charAt(i));
         }
-        for(int i = 0; i < word2.length(); i ++) {
+        for (int i = 0; i < word2.length(); i++) {
             res.setCharAt(min > i * 2 ? i * 2 + 1 : min / 2 + i, word2.charAt(i));
         }
 
@@ -33,18 +33,17 @@ public class ArrayString {
         while (len1 != 0 && len2 != 0) {
             if (len1 > len2) {
                 len1 = len1 % len2;
-            }
-            else {
+            } else {
                 len2 = len2 % len1;
             }
         }
         int sum = len1 + len2;
-        for (int i = 0; i < str1.length(); i ++) {
+        for (int i = 0; i < str1.length(); i++) {
             if (str1.charAt(i) != str1.charAt(i % sum)) {
                 return "";
             }
         }
-        for (int i = 0; i < str2.length(); i ++) {
+        for (int i = 0; i < str2.length(); i++) {
             if (str2.charAt(i) != str2.charAt(i % sum)) {
                 return "";
             }
@@ -56,11 +55,10 @@ public class ArrayString {
     public List<Boolean> kidsWithCandies(int[] candies, int extraCandies) {
         int max = Arrays.stream(candies).max().getAsInt();
         List<Boolean> res = new ArrayList<>();
-        for(int i = 0; i < candies.length; i++) {
-            if(candies[i] + extraCandies >= max) {
+        for (int i = 0; i < candies.length; i++) {
+            if (candies[i] + extraCandies >= max) {
                 res.add(true);
-            }
-            else {
+            } else {
                 res.add(false);
             }
         }
@@ -75,8 +73,7 @@ public class ArrayString {
                 if (countSpaces >= 3)
                     n -= (countSpaces - 1) / 2;
                 countSpaces = 0;
-            }
-            else {
+            } else {
                 countSpaces++;
             }
         }
@@ -98,14 +95,14 @@ public class ArrayString {
                 left++;
             }
             while (!setChars.contains(Character.toLowerCase(sArr[right]))) {
-                right --;
+                right--;
             }
             if (left < right) {
                 char temp = sArr[left];
                 sArr[left] = sArr[right];
                 sArr[right] = temp;
-                left ++;
-                right --;
+                left++;
+                right--;
             }
         }
 
@@ -135,11 +132,10 @@ public class ArrayString {
         List<Integer> countChars = new ArrayList<>();
         countChars.add(1);
         int index = 0;
-        for(int i = 1; i < chars.length; i++) {
-            if(uniqueChars.get(index) == chars[i]) {
+        for (int i = 1; i < chars.length; i++) {
+            if (uniqueChars.get(index) == chars[i]) {
                 countChars.set(index, countChars.get(index) + 1);
-            }
-            else {
+            } else {
                 uniqueChars.add(chars[i]);
                 countChars.add(1);
                 index++;
@@ -147,18 +143,38 @@ public class ArrayString {
         }
 
         StringBuilder res = new StringBuilder();
-        for(int i = 0; i < uniqueChars.size(); i ++) {
+        for (int i = 0; i < uniqueChars.size(); i++) {
             res.append(uniqueChars.get(i));
-            if(countChars.get(i) != 1) {
+            if (countChars.get(i) != 1) {
                 res.append(countChars.get(i));
             }
         }
 
-        for(int i = 0; i < res.length(); i ++) {
+        for (int i = 0; i < res.length(); i++) {
             chars[i] = res.charAt(i);
         }
         return res.length();
     }
 
+    //1679. Max Number of K-Sum Pairs
+    public int maxOperations(int[] nums, int k) {
+        Arrays.sort(nums);
+        int left = 0;
+        int right = nums.length - 1;
+        int res = 0;
 
+        while (left < right) {
+            if (nums[left] + nums[right] == k) {
+                res++;
+                left++;
+                right--;
+            } else if (nums[left] + nums[right] < k) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+
+        return res;
+    }
 }
